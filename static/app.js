@@ -61,7 +61,7 @@ const elements = {
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
+    // initTheme();
     setupEventListeners();
     checkUrlParams();
 });
@@ -77,20 +77,20 @@ window.addEventListener('unhandledrejection', (ev) => {
 });
 
 // --- Theme Management ---
-function initTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+// function initTheme() {
+//     const savedTheme = localStorage.getItem('theme');
+//     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-        state.theme = 'dark';
-        document.documentElement.classList.add('dark');
-    } else {
-        state.theme = 'light';
-        document.documentElement.classList.remove('dark');
-    }
-    // Ensure toggle button icon reflects current theme (keeps correct icon even if CSS dark variants fail)
-    updateThemeIcons();
-}
+//     if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+//         state.theme = 'dark';
+//         document.documentElement.classList.add('dark');
+//     } else {
+//         state.theme = 'light';
+//         document.documentElement.classList.remove('dark');
+//     }
+//     // Ensure toggle button icon reflects current theme (keeps correct icon even if CSS dark variants fail)
+//     updateThemeIcons();
+// }
 
 function toggleTheme() {
     console.debug('toggleTheme() executing — current state:', state.theme);
