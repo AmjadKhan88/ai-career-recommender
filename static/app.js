@@ -66,6 +66,16 @@ document.addEventListener('DOMContentLoaded', () => {
     checkUrlParams();
 });
 
+// Surface uncaught errors and promise rejections visibly for debugging
+window.addEventListener('error', (ev) => {
+    console.error('Uncaught error:', ev.error || ev.message);
+    try { showToast(`JS Error: ${ev.message || ev.error}`); } catch (e) {}
+});
+window.addEventListener('unhandledrejection', (ev) => {
+    console.error('Unhandled promise rejection:', ev.reason);
+    try { showToast(`Promise Rejection: ${ev.reason}`); } catch (e) {}
+});
+
 // --- Theme Management ---
 function initTheme() {
     const savedTheme = localStorage.getItem('theme');
@@ -83,6 +93,7 @@ function initTheme() {
 }
 
 function toggleTheme() {
+    console.debug('toggleTheme() executing — current state:', state.theme);
     if (state.theme === 'dark') {
         state.theme = 'light';
         document.documentElement.classList.remove('dark');
@@ -94,6 +105,25 @@ function toggleTheme() {
     }
     // Sync icons after theme change
     updateThemeIcons();
+   
+    try { showToast(`Theme: ${state.theme}`); } catch (e) {}
+    // Inline-style fallback: force a visible background/text change when Tailwind dark variants don't apply
+    try {
+        if (state.theme === 'dark') {
+            document.documentElement.style.backgroundColor = '#0f172a';
+            document.documentElement.style.color = '#f8fafc';
+            document.body.style.backgroundColor = '#0f172a';
+            document.body.style.color = '#f8fafc';
+        } else {
+            document.documentElement.style.backgroundColor = '';
+            document.documentElement.style.color = '';
+            document.body.style.backgroundColor = '';
+            document.body.style.color = '';
+        }
+        console.debug('Inline fallback styles applied.');
+    } catch (e) {
+        console.warn('Failed to apply inline style fallback for theme toggle.', e);
+    }
 }
 
 // Explicitly toggle the theme icons inside the theme button.
@@ -110,10 +140,37 @@ function updateThemeIcons() {
     }
 }
 
+// Small on-page toast for visible debugging feedback (auto-dismiss)
+function showToast(message, timeout = 2200) {
+    try {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 right-6 bg-black/85 text-white text-sm px-4 py-2 rounded shadow-lg z-50';
+        toast.style.opacity = '0.95';
+        toast.style.backdropFilter = 'blur(6px)';
+        toast.innerText = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.remove();
+        }, timeout);
+    } catch (e) {
+        // DOM not ready or other error; ignore
+    }
+}
+
 // --- Event Listeners Setup ---
 function setupEventListeners() {
     // Theme Toggle
-    elements.themeToggleBtn.addEventListener('click', toggleTheme);
+    // Attach theme toggle listener defensively in case the element wasn't present at script parse time
+    const themeBtn = document.getElementById('themeToggleBtn') || elements.themeToggleBtn;
+    if (themeBtn) {
+        themeBtn.addEventListener('click', (e) => {
+            console.debug('themeToggleBtn clicked');
+            toggleTheme(e);
+        });
+    } else {
+        console.warn('Theme toggle button not found; theme toggle disabled.');
+        try { showToast('Theme button not found — check markup.'); } catch (e) {}
+    }
 
     // Preset Pill Clicks
     document.querySelectorAll('.preset-skill').forEach(btn => {
