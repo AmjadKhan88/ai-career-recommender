@@ -1,0 +1,136 @@
+/* Custom Styling & Variables */
+
+/* Custom Animations */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.animate-shimmer {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.dark .animate-shimmer {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.dark .glass-panel {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Roadmap Checkbox & Timeline Effects */
+.roadmap-step {
+    position: relative;
+}
+
+.roadmap-step::before {
+    content: '';
+    position: absolute;
+    top: 2.25rem;
+    bottom: -1rem;
+    left: 1.25rem;
+    width: 2px;
+    background: #e2e8f0;
+    z-index: 0;
+}
+
+.dark .roadmap-step::before {
+    background: #334155;
+}
+
+.roadmap-step:last-child::before {
+    display: none;
+}
+
+/* Custom Checked Card Styling */
+.topic-card-checked {
+    border-color: #a78bfa !important;
+    background-color: rgba(167, 139, 250, 0.04) !important;
+}
+
+.dark .topic-card-checked {
+    border-color: #8b5cf6 !important;
+    background-color: rgba(139, 92, 246, 0.05) !important;
+}
+
+/* Drawer Animation Enhancements */
+#drawerOverlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#drawerPanel.show {
+    transform: translateX(0);
+}
+
+/* Custom Micro-interactions */
+.preset-skill, .preset-interest {
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preset-skill.active {
+    background-color: #8b5cf6;
+    color: white;
+    border-color: #7c3aed;
+}
+
+.preset-interest.active {
+    background-color: #6366f1;
+    color: white;
+    border-color: #4f46e5;
+}
+
+/* Glowing buttons */
+#submitBtn {
+    box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.3);
+}
+
+#submitBtn:hover {
+    box-shadow: 0 6px 20px 0 rgba(99, 102, 241, 0.45);
+    transform: translateY(-1px);
+}
+
+#submitBtn:active {
+    transform: translateY(1px);
+}
