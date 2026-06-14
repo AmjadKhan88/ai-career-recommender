@@ -78,6 +78,8 @@ function initTheme() {
         state.theme = 'light';
         document.documentElement.classList.remove('dark');
     }
+    // Ensure toggle button icon reflects current theme (keeps correct icon even if CSS dark variants fail)
+    updateThemeIcons();
 }
 
 function toggleTheme() {
@@ -89,6 +91,22 @@ function toggleTheme() {
         state.theme = 'dark';
         document.documentElement.classList.add('dark');
         localStorage.setItem('theme', 'dark');
+    }
+    // Sync icons after theme change
+    updateThemeIcons();
+}
+
+// Explicitly toggle the theme icons inside the theme button.
+function updateThemeIcons() {
+    const moon = document.querySelector('#themeToggleBtn .fa-moon');
+    const sun = document.querySelector('#themeToggleBtn .fa-sun');
+    if (!moon || !sun) return;
+    if (state.theme === 'dark') {
+        moon.classList.add('hidden');
+        sun.classList.remove('hidden');
+    } else {
+        moon.classList.remove('hidden');
+        sun.classList.add('hidden');
     }
 }
 
